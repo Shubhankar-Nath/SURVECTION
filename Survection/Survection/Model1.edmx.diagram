@@ -7,6 +7,12 @@
       <Diagram DiagramId="a07a929f077c4c9b8f8ee4f474ddef15" Name="Diagram1">
         <EntityTypeShape EntityType="SurvectionDatabaseModel.Candidate" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SurvectionDatabaseModel.Category" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.Organization" Width="1.5" PointX="0.75" PointY="4.125" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.QuestionBank" Width="1.5" PointX="5.375" PointY="4.25" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.Survey" Width="1.5" PointX="3" PointY="3.875" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.UserQuestion" Width="1.5" PointX="5.75" PointY="0.75" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK__QuestionB__Categ__4D94879B" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK__Survey__OrgId__59063A47" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
