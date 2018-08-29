@@ -12,23 +12,25 @@ namespace Survection
     using System;
     using System.Collections.Generic;
     
-    public partial class Candidate
+    public partial class Survey
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Candidate()
+        public Survey()
         {
             this.SurveyAnswers = new HashSet<SurveyAnswer>();
-            this.Surveys = new HashSet<Survey>();
+            this.Candidates = new HashSet<Candidate>();
         }
     
-        public int CandidateId { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string PhoneNumber { get; set; }
+        public int SurveyId { get; set; }
+        public Nullable<System.DateTime> StartDate { get; set; }
+        public Nullable<System.DateTime> EndDate { get; set; }
+        public string SurveyDesc { get; set; }
+        public Nullable<int> OrgId { get; set; }
     
+        public virtual Organization Organization { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SurveyAnswer> SurveyAnswers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Survey> Surveys { get; set; }
+        public virtual ICollection<Candidate> Candidates { get; set; }
     }
 }
