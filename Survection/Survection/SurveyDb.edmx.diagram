@@ -21,6 +21,7 @@
         <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" />
         <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" />
         <AssociationConnector Association="SurvectionDatabaseModel.SurveyCandidate" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.database_firewall_rules" Width="1.5" PointX="0.75" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

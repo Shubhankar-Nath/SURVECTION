@@ -31,5 +31,8 @@ namespace Survection
         public virtual DbSet<QuestionBank> QuestionBanks { get; set; }
         public virtual DbSet<Survey> Surveys { get; set; }
         public virtual DbSet<UserQuestion> UserQuestions { get; set; }
+        public virtual DbSet<SurveyAnswer> SurveyAnswers { get; set; }
+        public virtual DbSet<SurveyQuestion> SurveyQuestions { get; set; }
+        public virtual DbSet<database_firewall_rules> database_firewall_rules { get; set; }
     }
 }
