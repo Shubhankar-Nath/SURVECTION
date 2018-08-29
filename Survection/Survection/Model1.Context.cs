@@ -27,5 +27,9 @@ namespace Survection
     
         public virtual DbSet<Candidate> Candidates { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Organization> Organizations { get; set; }
+        public virtual DbSet<QuestionBank> QuestionBanks { get; set; }
+        public virtual DbSet<Survey> Surveys { get; set; }
+        public virtual DbSet<UserQuestion> UserQuestions { get; set; }
     }
 }
