@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SurvectionDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SurvectionDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Candidate">
           <Key>
             <PropertyRef Name="CandidateId" />
@@ -21,12 +21,114 @@
           <Property Name="CategoryId" Type="int" Nullable="false" />
           <Property Name="CategoryName" Type="varchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="Organization">
+          <Key>
+            <PropertyRef Name="OrgId" />
+          </Key>
+          <Property Name="OrgId" Type="int" Nullable="false" />
+          <Property Name="OrgName" Type="varchar" MaxLength="30" />
+          <Property Name="AdminId" Type="int" />
+        </EntityType>
+        <EntityType Name="QuestionBank">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="int" Nullable="false" />
+          <Property Name="Question" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="varchar" MaxLength="20" />
+          <Property Name="CategoryId" Type="int" />
+        </EntityType>
+        <EntityType Name="Survey">
+          <Key>
+            <PropertyRef Name="SurveyId" />
+          </Key>
+          <Property Name="SurveyId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="SurveyDesc" Type="varchar" MaxLength="100" />
+          <Property Name="OrgId" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'SurvectionDatabase.dbo.SurveyAnswer' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="SurveyAnswer">
+          <Property Name="SurveyId" Type="int" />
+          <Property Name="QuestionId" Type="int" />
+          <Property Name="CandidateId" Type="int" />
+          <Property Name="Answer" Type="varchar" MaxLength="20" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'SurvectionDatabase.dbo.SurveyCandidate' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="SurveyCandidate">
+          <Property Name="SurveyId" Type="int" />
+          <Property Name="CandidateId" Type="int" />
+        </EntityType>-->
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'SurvectionDatabase.dbo.SurveyQuestion' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="SurveyQuestion">
+          <Property Name="SurveyId" Type="int" />
+          <Property Name="QuestionId" Type="int" />
+        </EntityType>-->
+        <EntityType Name="UserQuestion">
+          <Key>
+            <PropertyRef Name="UQuestionId" />
+          </Key>
+          <Property Name="UQuestionId" Type="int" Nullable="false" />
+          <Property Name="Question" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__QuestionB__Categ__4D94879B">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="QuestionBank" Type="Self.QuestionBank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="QuestionBank">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Survey__OrgId__59063A47">
+          <End Role="Organization" Type="Self.Organization" Multiplicity="0..1" />
+          <End Role="Survey" Type="Self.Survey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="OrgId" />
+            </Principal>
+            <Dependent Role="Survey">
+              <PropertyRef Name="OrgId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <!--Errors Found During Generation:
+error 6004: The table 'SurvectionDatabase.dbo.SurveyAnswer' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__SurveyAns__Candi__5BE2A6F2" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'SurvectionDatabase.dbo.SurveyAnswer' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__SurveyAns__Surve__5AEE82B9" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__SurveyCan__Candi__5812160E" />-->
+        <!--Errors Found During Generation:
+error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by a relationship, but cannot be found.
+        <Association Name="FK__SurveyCan__Surve__571DF1D5" />-->
         <EntityContainer Name="SurvectionDatabaseModelStoreContainer">
           <EntitySet Name="Candidate" EntityType="Self.Candidate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionBank" EntityType="Self.QuestionBank" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Survey" EntityType="Self.Survey" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserQuestion" EntityType="Self.UserQuestion" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__QuestionB__Categ__4D94879B" Association="Self.FK__QuestionB__Categ__4D94879B">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="QuestionBank" EntitySet="QuestionBank" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Survey__OrgId__59063A47" Association="Self.FK__Survey__OrgId__59063A47">
+            <End Role="Organization" EntitySet="Organization" />
+            <End Role="Survey" EntitySet="Survey" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SurvectionDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -45,11 +147,86 @@
           </Key>
           <Property Name="CategoryId" Type="Int32" Nullable="false" />
           <Property Name="CategoryName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="QuestionBanks" Relationship="SurvectionDatabaseModel.FK__QuestionB__Categ__4D94879B" FromRole="Category" ToRole="QuestionBank" />
         </EntityType>
         <EntityContainer Name="SurvectionDatabaseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Candidates" EntityType="Self.Candidate" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Organizations" EntityType="SurvectionDatabaseModel.Organization" />
+          <EntitySet Name="QuestionBanks" EntityType="SurvectionDatabaseModel.QuestionBank" />
+          <EntitySet Name="Surveys" EntityType="SurvectionDatabaseModel.Survey" />
+          <EntitySet Name="UserQuestions" EntityType="SurvectionDatabaseModel.UserQuestion" />
+          <AssociationSet Name="FK__QuestionB__Categ__4D94879B" Association="SurvectionDatabaseModel.FK__QuestionB__Categ__4D94879B">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="QuestionBank" EntitySet="QuestionBanks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Survey__OrgId__59063A47" Association="SurvectionDatabaseModel.FK__Survey__OrgId__59063A47">
+            <End Role="Organization" EntitySet="Organizations" />
+            <End Role="Survey" EntitySet="Surveys" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Organization">
+          <Key>
+            <PropertyRef Name="OrgId" />
+          </Key>
+          <Property Name="OrgId" Type="Int32" Nullable="false" />
+          <Property Name="OrgName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="AdminId" Type="Int32" />
+          <NavigationProperty Name="Surveys" Relationship="SurvectionDatabaseModel.FK__Survey__OrgId__59063A47" FromRole="Organization" ToRole="Survey" />
+        </EntityType>
+        <EntityType Name="QuestionBank">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="Question" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CategoryId" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="SurvectionDatabaseModel.FK__QuestionB__Categ__4D94879B" FromRole="QuestionBank" ToRole="Category" />
+        </EntityType>
+        <EntityType Name="Survey">
+          <Key>
+            <PropertyRef Name="SurveyId" />
+          </Key>
+          <Property Name="SurveyId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="SurveyDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="OrgId" Type="Int32" />
+          <NavigationProperty Name="Organization" Relationship="SurvectionDatabaseModel.FK__Survey__OrgId__59063A47" FromRole="Survey" ToRole="Organization" />
+        </EntityType>
+        <EntityType Name="UserQuestion">
+          <Key>
+            <PropertyRef Name="UQuestionId" />
+          </Key>
+          <Property Name="UQuestionId" Type="Int32" Nullable="false" />
+          <Property Name="Question" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__QuestionB__Categ__4D94879B">
+          <End Type="SurvectionDatabaseModel.Category" Role="Category" Multiplicity="0..1" />
+          <End Type="SurvectionDatabaseModel.QuestionBank" Role="QuestionBank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="QuestionBank">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Survey__OrgId__59063A47">
+          <End Type="SurvectionDatabaseModel.Organization" Role="Organization" Multiplicity="0..1" />
+          <End Type="SurvectionDatabaseModel.Survey" Role="Survey" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Organization">
+              <PropertyRef Name="OrgId" />
+            </Principal>
+            <Dependent Role="Survey">
+              <PropertyRef Name="OrgId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -71,6 +248,45 @@
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Organizations">
+            <EntityTypeMapping TypeName="SurvectionDatabaseModel.Organization">
+              <MappingFragment StoreEntitySet="Organization">
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="OrgName" ColumnName="OrgName" />
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestionBanks">
+            <EntityTypeMapping TypeName="SurvectionDatabaseModel.QuestionBank">
+              <MappingFragment StoreEntitySet="QuestionBank">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Surveys">
+            <EntityTypeMapping TypeName="SurvectionDatabaseModel.Survey">
+              <MappingFragment StoreEntitySet="Survey">
+                <ScalarProperty Name="OrgId" ColumnName="OrgId" />
+                <ScalarProperty Name="SurveyDesc" ColumnName="SurveyDesc" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="SurveyId" ColumnName="SurveyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserQuestions">
+            <EntityTypeMapping TypeName="SurvectionDatabaseModel.UserQuestion">
+              <MappingFragment StoreEntitySet="UserQuestion">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Question" ColumnName="Question" />
+                <ScalarProperty Name="UQuestionId" ColumnName="UQuestionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
