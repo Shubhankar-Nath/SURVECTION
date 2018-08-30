@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="194d9a0c1a9c4e4fa628f6e81bdd4a3c" Name="Diagram1">
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.Candidate" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.Category" Width="1.5" PointX="5.75" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.Organization" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.QuestionBank" Width="1.5" PointX="8" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.Survey" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.SurveyAnswer" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.UserQuestion" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.SurveyQuestion" Width="1.5" PointX="2.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.database_firewall_rules" Width="1.5" PointX="7.75" PointY="1.5" IsExpanded="true" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK__QuestionB__Categ__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK__Survey__OrgId__59063A47" ManuallyRouted="false" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="SurvectionDatabaseModel.SurveyCandidate" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
