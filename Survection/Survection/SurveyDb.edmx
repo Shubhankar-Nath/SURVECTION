@@ -48,26 +48,35 @@
           <Property Name="SurveyDesc" Type="varchar" MaxLength="100" />
           <Property Name="OrgId" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'SurvectionDatabase.dbo.SurveyAnswer' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="SurveyAnswer">
-          <Property Name="SurveyId" Type="int" />
-          <Property Name="QuestionId" Type="int" />
-          <Property Name="CandidateId" Type="int" />
+          <Key>
+            <PropertyRef Name="SurveyId" />
+            <PropertyRef Name="QuestionId" />
+            <PropertyRef Name="CandidateId" />
+          </Key>
+          <Property Name="SurveyId" Type="int" Nullable="false" />
+          <Property Name="QuestionId" Type="int" Nullable="false" />
+          <Property Name="CandidateId" Type="int" Nullable="false" />
           <Property Name="Answer" Type="varchar" MaxLength="20" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'SurvectionDatabase.dbo.SurveyCandidate' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        </EntityType>
         <EntityType Name="SurveyCandidate">
-          <Property Name="SurveyId" Type="int" />
-          <Property Name="CandidateId" Type="int" />
-        </EntityType>-->
+          <Key>
+            <PropertyRef Name="SurveyId" />
+            <PropertyRef Name="CandidateId" />
+          </Key>
+          <Property Name="SurveyId" Type="int" Nullable="false" />
+          <Property Name="CandidateId" Type="int" Nullable="false" />
+        </EntityType>
         <!--Errors Found During Generation:
-warning 6013: The table/view 'SurvectionDatabase.dbo.SurveyQuestion' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+warning 6002: The table/view 'SurvectionDatabase.dbo.SurveyQuestion' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="SurveyQuestion">
-          <Property Name="SurveyId" Type="int" />
-          <Property Name="QuestionId" Type="int" />
-        </EntityType>-->
+          <Key>
+            <PropertyRef Name="SurveyId" />
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="SurveyId" Type="int" Nullable="false" />
+          <Property Name="QuestionId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserQuestion">
           <Key>
             <PropertyRef Name="UQuestionId" />
@@ -75,6 +84,24 @@ warning 6013: The table/view 'SurvectionDatabase.dbo.SurveyQuestion' does not ha
           <Property Name="UQuestionId" Type="int" Nullable="false" />
           <Property Name="Question" Type="varchar" MaxLength="50" />
           <Property Name="Type" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="create_date" Type="datetime" Nullable="false" />
+          <Property Name="modify_date" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="FK__QuestionB__Categ__4D94879B">
           <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
@@ -100,25 +127,79 @@ warning 6013: The table/view 'SurvectionDatabase.dbo.SurveyQuestion' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-error 6004: The table 'SurvectionDatabase.dbo.SurveyAnswer' is referenced by a relationship, but cannot be found.
-        <Association Name="FK__SurveyAns__Candi__5BE2A6F2" />-->
-        <!--Errors Found During Generation:
-error 6004: The table 'SurvectionDatabase.dbo.SurveyAnswer' is referenced by a relationship, but cannot be found.
-        <Association Name="FK__SurveyAns__Surve__5AEE82B9" />-->
-        <!--Errors Found During Generation:
-error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by a relationship, but cannot be found.
-        <Association Name="FK__SurveyCan__Candi__5812160E" />-->
-        <!--Errors Found During Generation:
-error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by a relationship, but cannot be found.
-        <Association Name="FK__SurveyCan__Surve__571DF1D5" />-->
+        <Association Name="FK__SurveyAns__Candi__5BE2A6F2">
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="1" />
+          <End Role="SurveyAnswer" Type="Self.SurveyAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candidate">
+              <PropertyRef Name="CandidateId" />
+            </Principal>
+            <Dependent Role="SurveyAnswer">
+              <PropertyRef Name="CandidateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SurveyAns__Surve__5AEE82B9">
+          <End Role="Survey" Type="Self.Survey" Multiplicity="1" />
+          <End Role="SurveyAnswer" Type="Self.SurveyAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Survey">
+              <PropertyRef Name="SurveyId" />
+            </Principal>
+            <Dependent Role="SurveyAnswer">
+              <PropertyRef Name="SurveyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SurveyCan__Candi__5812160E">
+          <End Role="Candidate" Type="Self.Candidate" Multiplicity="1" />
+          <End Role="SurveyCandidate" Type="Self.SurveyCandidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candidate">
+              <PropertyRef Name="CandidateId" />
+            </Principal>
+            <Dependent Role="SurveyCandidate">
+              <PropertyRef Name="CandidateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SurveyCan__Surve__571DF1D5">
+          <End Role="Survey" Type="Self.Survey" Multiplicity="1" />
+          <End Role="SurveyCandidate" Type="Self.SurveyCandidate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Survey">
+              <PropertyRef Name="SurveyId" />
+            </Principal>
+            <Dependent Role="SurveyCandidate">
+              <PropertyRef Name="SurveyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="SurvectionDatabaseModelStoreContainer">
           <EntitySet Name="Candidate" EntityType="Self.Candidate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Organization" EntityType="Self.Organization" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionBank" EntityType="Self.QuestionBank" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Survey" EntityType="Self.Survey" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SurveyAnswer" EntityType="Self.SurveyAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SurveyCandidate" EntityType="Self.SurveyCandidate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserQuestion" EntityType="Self.UserQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SurveyQuestion" EntityType="Self.SurveyQuestion" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [SurveyQuestion].[SurveyId] AS [SurveyId], 
+    [SurveyQuestion].[QuestionId] AS [QuestionId]
+    FROM [dbo].[SurveyQuestion] AS [SurveyQuestion]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
+            <DefiningQuery>SELECT 
+    [database_firewall_rules].[id] AS [id], 
+    [database_firewall_rules].[name] AS [name], 
+    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
+    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
+    [database_firewall_rules].[create_date] AS [create_date], 
+    [database_firewall_rules].[modify_date] AS [modify_date]
+    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__QuestionB__Categ__4D94879B" Association="Self.FK__QuestionB__Categ__4D94879B">
             <End Role="Category" EntitySet="Category" />
             <End Role="QuestionBank" EntitySet="QuestionBank" />
@@ -126,6 +207,22 @@ error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by 
           <AssociationSet Name="FK__Survey__OrgId__59063A47" Association="Self.FK__Survey__OrgId__59063A47">
             <End Role="Organization" EntitySet="Organization" />
             <End Role="Survey" EntitySet="Survey" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SurveyAns__Candi__5BE2A6F2" Association="Self.FK__SurveyAns__Candi__5BE2A6F2">
+            <End Role="Candidate" EntitySet="Candidate" />
+            <End Role="SurveyAnswer" EntitySet="SurveyAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SurveyAns__Surve__5AEE82B9" Association="Self.FK__SurveyAns__Surve__5AEE82B9">
+            <End Role="Survey" EntitySet="Survey" />
+            <End Role="SurveyAnswer" EntitySet="SurveyAnswer" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SurveyCan__Candi__5812160E" Association="Self.FK__SurveyCan__Candi__5812160E">
+            <End Role="Candidate" EntitySet="Candidate" />
+            <End Role="SurveyCandidate" EntitySet="SurveyCandidate" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SurveyCan__Surve__571DF1D5" Association="Self.FK__SurveyCan__Surve__571DF1D5">
+            <End Role="Survey" EntitySet="Survey" />
+            <End Role="SurveyCandidate" EntitySet="SurveyCandidate" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -140,6 +237,8 @@ error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by 
           <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="SurveyAnswers" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" FromRole="Candidate" ToRole="SurveyAnswer" />
+          <NavigationProperty Name="Surveys" Relationship="SurvectionDatabaseModel.SurveyCandidate" FromRole="Candidate" ToRole="Survey" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -164,6 +263,21 @@ error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by 
             <End Role="Organization" EntitySet="Organizations" />
             <End Role="Survey" EntitySet="Surveys" />
           </AssociationSet>
+          <EntitySet Name="SurveyAnswers" EntityType="SurvectionDatabaseModel.SurveyAnswer" />
+          <EntitySet Name="SurveyQuestions" EntityType="SurvectionDatabaseModel.SurveyQuestion" />
+          <AssociationSet Name="FK__SurveyAns__Candi__5BE2A6F2" Association="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2">
+            <End Role="Candidate" EntitySet="Candidates" />
+            <End Role="SurveyAnswer" EntitySet="SurveyAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__SurveyAns__Surve__5AEE82B9" Association="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9">
+            <End Role="Survey" EntitySet="Surveys" />
+            <End Role="SurveyAnswer" EntitySet="SurveyAnswers" />
+          </AssociationSet>
+          <AssociationSet Name="SurveyCandidate" Association="SurvectionDatabaseModel.SurveyCandidate">
+            <End Role="Candidate" EntitySet="Candidates" />
+            <End Role="Survey" EntitySet="Surveys" />
+          </AssociationSet>
+          <EntitySet Name="database_firewall_rules" EntityType="SurvectionDatabaseModel.database_firewall_rules" />
         </EntityContainer>
         <EntityType Name="Organization">
           <Key>
@@ -194,6 +308,8 @@ error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by 
           <Property Name="SurveyDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="OrgId" Type="Int32" />
           <NavigationProperty Name="Organization" Relationship="SurvectionDatabaseModel.FK__Survey__OrgId__59063A47" FromRole="Survey" ToRole="Organization" />
+          <NavigationProperty Name="SurveyAnswers" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" FromRole="Survey" ToRole="SurveyAnswer" />
+          <NavigationProperty Name="Candidates" Relationship="SurvectionDatabaseModel.SurveyCandidate" FromRole="Survey" ToRole="Candidate" />
         </EntityType>
         <EntityType Name="UserQuestion">
           <Key>
@@ -227,6 +343,71 @@ error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SurveyAnswer">
+          <Key>
+            <PropertyRef Name="SurveyId" />
+            <PropertyRef Name="QuestionId" />
+            <PropertyRef Name="CandidateId" />
+          </Key>
+          <Property Name="SurveyId" Type="Int32" Nullable="false" />
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+          <Property Name="CandidateId" Type="Int32" Nullable="false" />
+          <Property Name="Answer" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Candidate" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" FromRole="SurveyAnswer" ToRole="Candidate" />
+          <NavigationProperty Name="Survey" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" FromRole="SurveyAnswer" ToRole="Survey" />
+        </EntityType>
+        <EntityType Name="SurveyQuestion">
+          <Key>
+            <PropertyRef Name="SurveyId" />
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="SurveyId" Type="Int32" Nullable="false" />
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__SurveyAns__Candi__5BE2A6F2">
+          <End Type="SurvectionDatabaseModel.Candidate" Role="Candidate" Multiplicity="1" />
+          <End Type="SurvectionDatabaseModel.SurveyAnswer" Role="SurveyAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Candidate">
+              <PropertyRef Name="CandidateId" />
+            </Principal>
+            <Dependent Role="SurveyAnswer">
+              <PropertyRef Name="CandidateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__SurveyAns__Surve__5AEE82B9">
+          <End Type="SurvectionDatabaseModel.Survey" Role="Survey" Multiplicity="1" />
+          <End Type="SurvectionDatabaseModel.SurveyAnswer" Role="SurveyAnswer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Survey">
+              <PropertyRef Name="SurveyId" />
+            </Principal>
+            <Dependent Role="SurveyAnswer">
+              <PropertyRef Name="SurveyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SurveyCandidate">
+          <End Type="SurvectionDatabaseModel.Candidate" Role="Candidate" Multiplicity="*" />
+          <End Type="SurvectionDatabaseModel.Survey" Role="Survey" Multiplicity="*" />
+        </Association>
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="start_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="end_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -287,6 +468,44 @@ error 6004: The table 'SurvectionDatabase.dbo.SurveyCandidate' is referenced by 
                 <ScalarProperty Name="Type" ColumnName="Type" />
                 <ScalarProperty Name="Question" ColumnName="Question" />
                 <ScalarProperty Name="UQuestionId" ColumnName="UQuestionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SurveyAnswers">
+            <EntityTypeMapping TypeName="SurvectionDatabaseModel.SurveyAnswer">
+              <MappingFragment StoreEntitySet="SurveyAnswer">
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="CandidateId" ColumnName="CandidateId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="SurveyId" ColumnName="SurveyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SurveyQuestions">
+            <EntityTypeMapping TypeName="SurvectionDatabaseModel.SurveyQuestion">
+              <MappingFragment StoreEntitySet="SurveyQuestion">
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="SurveyId" ColumnName="SurveyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="SurveyCandidate" TypeName="SurvectionDatabaseModel.SurveyCandidate" StoreEntitySet="SurveyCandidate">
+            <EndProperty Name="Survey">
+              <ScalarProperty Name="SurveyId" ColumnName="SurveyId" />
+            </EndProperty>
+            <EndProperty Name="Candidate">
+              <ScalarProperty Name="CandidateId" ColumnName="CandidateId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="database_firewall_rules">
+            <EntityTypeMapping TypeName="SurvectionDatabaseModel.database_firewall_rules">
+              <MappingFragment StoreEntitySet="database_firewall_rules">
+                <ScalarProperty Name="modify_date" ColumnName="modify_date" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
+                <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
