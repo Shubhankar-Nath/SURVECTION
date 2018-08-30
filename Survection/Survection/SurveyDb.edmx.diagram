@@ -13,12 +13,12 @@
         <EntityTypeShape EntityType="SurvectionDatabaseModel.UserQuestion" Width="1.5" PointX="5.5" PointY="1" />
         <AssociationConnector Association="SurvectionDatabaseModel.FK__QuestionB__Categ__4D94879B" />
         <AssociationConnector Association="SurvectionDatabaseModel.FK__Survey__OrgId__59063A47" />
-        <EntityTypeShape EntityType="SurvectionDatabaseModel.SurveyAnswer" Width="1.5" PointX="8.625" PointY="2.5" />
         <EntityTypeShape EntityType="SurvectionDatabaseModel.SurveyQuestion" Width="1.5" PointX="0.75" PointY="7.75" />
-        <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" />
-        <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" />
         <AssociationConnector Association="SurvectionDatabaseModel.SurveyCandidate" />
         <EntityTypeShape EntityType="SurvectionDatabaseModel.database_firewall_rules" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.SurveyAnswer" Width="1.5" PointX="8.25" PointY="2.5" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

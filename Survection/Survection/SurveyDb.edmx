@@ -237,8 +237,8 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
           <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="SurveyAnswers" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" FromRole="Candidate" ToRole="SurveyAnswer" />
           <NavigationProperty Name="Surveys" Relationship="SurvectionDatabaseModel.SurveyCandidate" FromRole="Candidate" ToRole="Survey" />
+          <NavigationProperty Name="SurveyAnswers" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" FromRole="Candidate" ToRole="SurveyAnswer" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -263,8 +263,13 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
             <End Role="Organization" EntitySet="Organizations" />
             <End Role="Survey" EntitySet="Surveys" />
           </AssociationSet>
-          <EntitySet Name="SurveyAnswers" EntityType="SurvectionDatabaseModel.SurveyAnswer" />
           <EntitySet Name="SurveyQuestions" EntityType="SurvectionDatabaseModel.SurveyQuestion" />
+          <AssociationSet Name="SurveyCandidate" Association="SurvectionDatabaseModel.SurveyCandidate">
+            <End Role="Candidate" EntitySet="Candidates" />
+            <End Role="Survey" EntitySet="Surveys" />
+          </AssociationSet>
+          <EntitySet Name="database_firewall_rules" EntityType="SurvectionDatabaseModel.database_firewall_rules" />
+          <EntitySet Name="SurveyAnswers" EntityType="SurvectionDatabaseModel.SurveyAnswer" />
           <AssociationSet Name="FK__SurveyAns__Candi__5BE2A6F2" Association="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2">
             <End Role="Candidate" EntitySet="Candidates" />
             <End Role="SurveyAnswer" EntitySet="SurveyAnswers" />
@@ -273,11 +278,6 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
             <End Role="Survey" EntitySet="Surveys" />
             <End Role="SurveyAnswer" EntitySet="SurveyAnswers" />
           </AssociationSet>
-          <AssociationSet Name="SurveyCandidate" Association="SurvectionDatabaseModel.SurveyCandidate">
-            <End Role="Candidate" EntitySet="Candidates" />
-            <End Role="Survey" EntitySet="Surveys" />
-          </AssociationSet>
-          <EntitySet Name="database_firewall_rules" EntityType="SurvectionDatabaseModel.database_firewall_rules" />
         </EntityContainer>
         <EntityType Name="Organization">
           <Key>
@@ -308,8 +308,8 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
           <Property Name="SurveyDesc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="OrgId" Type="Int32" />
           <NavigationProperty Name="Organization" Relationship="SurvectionDatabaseModel.FK__Survey__OrgId__59063A47" FromRole="Survey" ToRole="Organization" />
-          <NavigationProperty Name="SurveyAnswers" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" FromRole="Survey" ToRole="SurveyAnswer" />
           <NavigationProperty Name="Candidates" Relationship="SurvectionDatabaseModel.SurveyCandidate" FromRole="Survey" ToRole="Candidate" />
+          <NavigationProperty Name="SurveyAnswers" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" FromRole="Survey" ToRole="SurveyAnswer" />
         </EntityType>
         <EntityType Name="UserQuestion">
           <Key>
@@ -343,6 +343,34 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="SurveyQuestion">
+          <Key>
+            <PropertyRef Name="SurveyId" />
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="SurveyId" Type="Int32" Nullable="false" />
+          <Property Name="QuestionId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="SurveyCandidate">
+          <End Type="SurvectionDatabaseModel.Candidate" Role="Candidate" Multiplicity="*" />
+          <End Type="SurvectionDatabaseModel.Survey" Role="Survey" Multiplicity="*" />
+        </Association>
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="start_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="end_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
         <EntityType Name="SurveyAnswer">
           <Key>
             <PropertyRef Name="SurveyId" />
@@ -355,14 +383,6 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
           <Property Name="Answer" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Candidate" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Candi__5BE2A6F2" FromRole="SurveyAnswer" ToRole="Candidate" />
           <NavigationProperty Name="Survey" Relationship="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" FromRole="SurveyAnswer" ToRole="Survey" />
-        </EntityType>
-        <EntityType Name="SurveyQuestion">
-          <Key>
-            <PropertyRef Name="SurveyId" />
-            <PropertyRef Name="QuestionId" />
-          </Key>
-          <Property Name="SurveyId" Type="Int32" Nullable="false" />
-          <Property Name="QuestionId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK__SurveyAns__Candi__5BE2A6F2">
           <End Type="SurvectionDatabaseModel.Candidate" Role="Candidate" Multiplicity="1" />
@@ -388,26 +408,6 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="SurveyCandidate">
-          <End Type="SurvectionDatabaseModel.Candidate" Role="Candidate" Multiplicity="*" />
-          <End Type="SurvectionDatabaseModel.Survey" Role="Survey" Multiplicity="*" />
-        </Association>
-        <EntityType Name="database_firewall_rules">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="start_ip_address" />
-            <PropertyRef Name="end_ip_address" />
-            <PropertyRef Name="create_date" />
-            <PropertyRef Name="modify_date" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="start_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="end_ip_address" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -471,16 +471,6 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SurveyAnswers">
-            <EntityTypeMapping TypeName="SurvectionDatabaseModel.SurveyAnswer">
-              <MappingFragment StoreEntitySet="SurveyAnswer">
-                <ScalarProperty Name="Answer" ColumnName="Answer" />
-                <ScalarProperty Name="CandidateId" ColumnName="CandidateId" />
-                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
-                <ScalarProperty Name="SurveyId" ColumnName="SurveyId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SurveyQuestions">
             <EntityTypeMapping TypeName="SurvectionDatabaseModel.SurveyQuestion">
               <MappingFragment StoreEntitySet="SurveyQuestion">
@@ -506,6 +496,16 @@ warning 6002: The table/view 'SurvectionDatabase.sys.database_firewall_rules' do
                 <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SurveyAnswers">
+            <EntityTypeMapping TypeName="SurvectionDatabaseModel.SurveyAnswer">
+              <MappingFragment StoreEntitySet="SurveyAnswer">
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="CandidateId" ColumnName="CandidateId" />
+                <ScalarProperty Name="QuestionId" ColumnName="QuestionId" />
+                <ScalarProperty Name="SurveyId" ColumnName="SurveyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
