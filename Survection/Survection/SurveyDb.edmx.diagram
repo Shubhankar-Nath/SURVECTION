@@ -19,6 +19,14 @@
         <AssociationConnector Association="SurvectionDatabaseModel.FK__SurveyAns__Surve__5AEE82B9" />
         <AssociationConnector Association="SurvectionDatabaseModel.SurveyCandidate" />
         <EntityTypeShape EntityType="SurvectionDatabaseModel.database_firewall_rules" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.AspNetRoles" Width="1.5" PointX="5.75" PointY="8.375" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.AspNetUserClaims" Width="1.5" PointX="10.25" PointY="7" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.AspNetUserLogins" Width="1.5" PointX="10.25" PointY="9.625" />
+        <EntityTypeShape EntityType="SurvectionDatabaseModel.AspNetUsers" Width="1.5" PointX="8" PointY="7.25" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SurvectionDatabaseModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="SurvectionDatabaseModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
